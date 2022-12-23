@@ -1,0 +1,17 @@
+{
+  "main_script": "src/main.py",
+  "headless": true,
+  "name": "Bind nested objects into groups",
+  "description": "Binds nested objects into groups",
+  "categories": [ 
+    "images",
+    "annotation transformation",
+    "data operations"
+  ],
+  "context_menu": {
+    "context_category": "Transform",
+    "target": [
+      "images_project"
+    ]
+  }
+}
