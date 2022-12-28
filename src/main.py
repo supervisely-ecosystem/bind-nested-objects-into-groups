@@ -71,7 +71,7 @@ def get_labels_intersection_over_first(label_1: Label, label_2: Label, img_size=
     return get_geometries_intersection_over_first(label_1.geometry, label_2.geometry)
 
 
-def get_relations(parents, childs):
+def get_relations(parents, childs, threshold):
     relations = {}
     parents_n = len(parents)
     childs_n = len(childs)
@@ -79,23 +79,33 @@ def get_relations(parents, childs):
     for _ in range(parents_n):
         relations_map.append([0] * childs_n)
 
-    scored_idx_pairs = [
-        IndexPairWithScore(
-            idx_1=idx_1,
-            idx_2=idx_2,
-            score=get_labels_intersection_over_first(elem_1, elem_2),
-        )
-        for idx_1, elem_1 in enumerate(childs)
-        for idx_2, elem_2 in enumerate(parents)
-    ]
+    is_child = set()
+    scored_idx_pairs = []
+    for ch_idx, ch_el in enumerate(childs):
+        for par_idx, par_el in enumerate(parents):
+            if ch_idx in is_child:
+                break
+            pair_with_score = IndexPairWithScore(
+                idx_1=ch_idx,
+                idx_2=par_idx,
+                score=get_labels_intersection_over_first(ch_el, par_el),
+            )
+            if pair_with_score.score >= threshold:
+                scored_idx_pairs.append(pair_with_score)
+                is_child.add(ch_idx)
 
     for (idx_1, idx_2, score) in scored_idx_pairs:
         relations_map[idx_2][idx_1] = score
 
+    print("relations_map: ")
+    print("\t" + ", ".join(str(i) for i in range(len(childs))))
+    for i, row in enumerate(relations_map):
+        print(i, "\t:", ", ".join([str(x) for x in row]))
+
     for parent_idx in range(parents_n):
         for child_idx in range(childs_n):
             score = relations_map[parent_idx][child_idx]
-            if score < config.THRESHOLD:
+            if score < threshold:
                 continue
             if parent_idx in relations:
                 s = set(relations[parent_idx])
@@ -116,42 +126,40 @@ def bind_nested_objects_on_image(
     parents = []
     childs = []
     skipped = []
-    for label in ann.labels:
+    for id, label in enumerate(ann.labels):
         if label.binding_key is None:
             if label.obj_class.name in config.PARENT_NAMES:
-                parents.append(label)
+                parents.append(id)
             elif label.obj_class.name in config.CHILD_NAMES:
-                childs.append(label)
+                childs.append(id)
             else:
-                skipped.append(label)
+                skipped.append(id)
         else:
-            skipped.append(label)
+            skipped.append(id)
 
-    realtions = get_relations(parents, childs)
+    print("labels:")
+    print("parents: ", [ann.labels[i].obj_class.name for i in parents])
+    print("childs: ", [ann.labels[i].obj_class.name for i in childs])
+    print("skipped: ", [ann.labels[i].obj_class.name for i in skipped])
 
-    for parent_idx, childs_idxs in realtions.items():
-        if not parents[parent_idx].binding_key is None:
-            continue
-        available_childs_idx = [
-            idx for idx in childs_idxs if childs[idx].binding_key is None
-        ]
-        if len(available_childs_idx) == 0:
-            continue
-        key = str(parents[parent_idx].to_json()["id"])
-        parents[parent_idx].binding_key = key
-        for idx in available_childs_idx:
-            childs[idx].binding_key = key
+    relations = get_relations(
+        [ann.labels[i] for i in parents],
+        [ann.labels[i] for i in childs],
+        config.THRESHOLD,
+    )
+    print(json.dumps(relations, indent=2))
+    print()
 
-    single = [
-        *[label for label in parents if label.binding_key is None],
-        *[label for label in childs if label.binding_key is None],
-    ]
+    for parent_idx, childs_idxs in relations.items():
+        key = str(ann.labels[parents[parent_idx]].to_json()["id"])
+        ann.labels[parents[parent_idx]].binding_key = key
+        for idx in childs_idxs:
+            ann.labels[childs[idx]].binding_key = key
 
     updated_labels = [
-        *single,
-        *skipped,
-        *[label for label in childs if not label.binding_key is None],
-        *[label for label in parents if not label.binding_key is None],
+        *[ann.labels[idx] for idx in skipped],
+        *[ann.labels[idx] for idx in childs],
+        *[ann.labels[idx] for idx in parents],
     ]
 
     for label in ann.labels:
@@ -176,7 +184,7 @@ if __name__ == "__main__":
     project_id = sly.env.project_id()
     project_meta_json = api.project.get_meta(project_id)
     project_meta = sly.ProjectMeta.from_json(project_meta_json)
-    
+
     # image_id = config.IMAGE_ID
     # bind_nested_objects_on_image(api, project_meta, image_id)
 
@@ -184,4 +192,5 @@ if __name__ == "__main__":
     for dataset in datasets:
         images = api.image.get_list(dataset.id)
         for image in images:
+            print("image id: ", image.id)
             bind_nested_objects_on_image(api, project_meta, image.id)
