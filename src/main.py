@@ -7,8 +7,7 @@ layout = Container(
     widgets=[
         ui.thumbnail_card,
         ui.configuration_card,
-        ui.progress_bar,
-        ui.start_button,
+        ui.start_button_card,
     ],
     direction="vertical",
     gap=15,

@@ -51,13 +51,14 @@ def bind_nested_objects_on_image(image_id: int):
         for idx in childs_idxs:
             ann.labels[childs[idx]].binding_key = key
 
-    updated_labels = [
-        *[ann.labels[idx] for idx in skipped],
-        *[ann.labels[idx] for idx in childs],
-        *[ann.labels[idx] for idx in parents],
-    ]
-
+    first = []
+    last = []
+    for label in ann.labels:
+        if label.binding_key == str(label.to_json()["id"]):
+            last.append(label)
+        else:
+            first.append(label)
     for label in ann.labels:
         ann = ann.delete_label(label)
-    ann = ann.add_labels(updated_labels)
+    ann = ann.add_labels([*first, *last])
     g.api.annotation.upload_ann(image_id, ann)

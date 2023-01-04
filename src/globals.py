@@ -15,11 +15,17 @@ project_info = api.project.get_info_by_id(project_id)
 dataset_id = sly.env.dataset_id(raise_not_found=False)
 dataset_info = None
 images = []
-_class_filters = [
-    {"field": "shape", "operator": "!=", "value": "line"},
-    {"field": "shape", "operator": "!=", "value": "point"},
+classes_json = [
+    {
+        "title": data.name,
+        "shape": data.shape,
+        "color": data.color,
+        "geometry_config": data.settings,
+        "hotkey": "",
+    }
+    for data in api.object_class.get_list(project_id)
 ]
-classes = api.object_class.get_list(project_id)
+classes = [sly.ObjClass.from_json(i) for i in classes_json]
 
 if not dataset_id is None:
     dataset_info = api.dataset.get_info_by_id(dataset_id)
