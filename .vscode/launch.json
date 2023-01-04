@@ -2,14 +2,25 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Uvicorn",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "justMyCode": false,
+            "module": "uvicorn",
+            "args": [
+                "src.main:app",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8000",
+                "--ws",
+                "websockets",
+                "--reload"
+            ],
+            "jinja": true,
+            "justMyCode": true,
             "env": {
-                "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"
+                "PYTHONPATH": "${workspaceFolder}:${PYTHONPATH}",
+                "LOG_LEVEL": "DEBUG",
             }
         }
     ]
