@@ -10,6 +10,7 @@ from supervisely.app.widgets import (
     ObjectClassView,
     Select,
     NotificationBox,
+    Text,
 )
 import src.globals as g
 import src.services as services
@@ -60,11 +61,14 @@ disclaimer = NotificationBox(
     description="Objects will be modified in-place! Make sure you backed up your data.",
     box_type="warning",
 )
+success_message = Text("Done!", status="success")
+success_message.hide()
 start_button_cont = Container(
     widgets=[
         disclaimer,
         start_button,
         progress_bar,
+        success_message,
     ]
 )
 start_button_card = Card(content=start_button_cont)
@@ -72,6 +76,7 @@ start_button_card = Card(content=start_button_cont)
 
 @start_button.click
 def start():
+    success_message.hide()
     parents = []
     childs = []
     for i in range(len(g.classes)):
@@ -91,3 +96,4 @@ def start():
         for image in g.images:
             services.bind_nested_objects_on_image(image.id)
             pbar.update(1)
+    success_message.show()
