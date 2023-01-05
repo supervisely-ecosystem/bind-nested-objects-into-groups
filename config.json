@@ -1,7 +1,7 @@
 {
-  "main_script": "src/main.py",
-  "headless": true,
-  "name": "Bind nested objects into groups",
+  "entrypoint": "python -m uvicorn src.main:app --host 0.0.0.0 --port 8000",
+  "headless": false,
+  "name": "Bind objects into groups",
   "description": "Binds nested objects into groups",
   "categories": [ 
     "images",
@@ -11,7 +11,8 @@
   "context_menu": {
     "context_category": "Transform",
     "target": [
-      "images_project"
+      "images_project",
+      "images_dataset"
     ]
   }
 }
