@@ -34,7 +34,7 @@ action_input = [
 ]
 
 threshold_input = InputNumber(value=100)
-threshold_field = Field(content=threshold_input, title="Threshold")
+threshold_field = Field(content=threshold_input, title="Threshold, %")
 
 configuration = Container(
     widgets=[
