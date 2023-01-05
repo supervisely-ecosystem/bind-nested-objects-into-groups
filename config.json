@@ -5,7 +5,7 @@
   "version": "2.0.0",
   "entrypoint": "python -m uvicorn src.main:app --host 0.0.0.0 --port 8000",
   "headless": false,
-  "name": "[test] Bind objects",
+  "name": "[test] Group nested objects",
   "description": "Binds nested objects into groups",
   "categories": [ 
     "images",
