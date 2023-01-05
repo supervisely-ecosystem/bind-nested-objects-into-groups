@@ -1,8 +1,9 @@
-# Bind nested objects in groups
+# Group nested objects
 
 # Overview
 
-This application binds objects on image into groups. User can select parent classes, child classes and threshold. Then objects will be binded into groups if intersection area >= threshold * child area. All objects in the group will have binding key equal to the parent object id.
+In Supervisely you can bind objects into groups. This is achieved by setting same binding key property for the objects you want to combine.
+This application binds nested objects together if their intersection exceeds given threshold. User can select parent classes, child classes and % threshold. Then objects will be binded into groups if parent object overlaps child object by % threshold. All objects in the group will have binding key equal to the parent object id.
 
 # How to Run
 
