@@ -27,13 +27,13 @@ classes_json = [
 ]
 classes = [sly.ObjClass.from_json(i) for i in classes_json]
 
-if not dataset_id is None:
-    dataset_info = api.dataset.get_info_by_id(dataset_id)
-    images = api.image.get_list(dataset_id)
-else:
+if dataset_id is None:
     datasets = api.dataset.get_list(project_id=project_id)
     for dataset in datasets:
         images.extend(api.image.get_list(dataset_id=dataset.id))
+else:
+    dataset_info = api.dataset.get_info_by_id(dataset_id)
+    images = api.image.get_list(dataset_id)
 
 parents_names = []
 childs_names = []
