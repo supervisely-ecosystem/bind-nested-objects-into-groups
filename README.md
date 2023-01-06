@@ -24,7 +24,7 @@ This application binds nested objects together if their intersection exceeds giv
 
 1. Open the context menu of a project and run the app
 
-<img src="https://user-images.githubusercontent.com/115161827/209393639-1eb69ed0-e532-4288-96af-06b4473eacc7.gif">
+<img src="xxx">
 
 2. Configure the classes settings, choose threshold and click `Start`
 
