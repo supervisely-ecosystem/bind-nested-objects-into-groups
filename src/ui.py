@@ -58,7 +58,7 @@ progress_bar = Progress()
 start_button = Button("start")
 disclaimer = NotificationBox(
     title="Warning",
-    description="Objects will be modified in-place! Make sure you backed up your data.",
+    description="Objects will be modified in-place!",
     box_type="warning",
 )
 success_message = Text("Done!", status="success")
