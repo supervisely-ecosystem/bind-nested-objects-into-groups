@@ -36,5 +36,5 @@ This application binds nested objects together if their intersection exceeds giv
 
 ## Screenshot
 
-<img src="https://user-images.githubusercontent.com/115161827/211062393-6cacb72c-27bc-4429-97f2-519e4d414709.png">
+<img src="https://user-images.githubusercontent.com/115161827/211086283-a18585ab-260f-45eb-ba05-ead1794f4fce.png">
 
