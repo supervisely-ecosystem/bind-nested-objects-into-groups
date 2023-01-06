@@ -1,3 +1,7 @@
+<div align="center" markdown>
+<img src="https://user-images.githubusercontent.com/115161827/211063080-95d8fc82-7549-4859-97fd-361bcb5e0b20.png"/>
+
+
 # Group nested objects
 
 <p align="center">
