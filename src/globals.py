@@ -15,7 +15,7 @@ project_info = api.project.get_info_by_id(project_id)
 dataset_id = sly.env.dataset_id(raise_not_found=False)
 dataset_info = None
 images = []
-classes_json = [
+obj_classes_json = [
     {
         "title": data.name,
         "shape": data.shape,
@@ -25,7 +25,7 @@ classes_json = [
     }
     for data in api.object_class.get_list(project_id)
 ]
-classes = [sly.ObjClass.from_json(i) for i in classes_json]
+obj_classes = [sly.ObjClass.from_json(i) for i in obj_classes_json]
 
 if dataset_id is None:
     datasets = api.dataset.get_list(project_id=project_id)
