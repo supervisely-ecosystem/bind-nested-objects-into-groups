@@ -60,7 +60,7 @@ tag_no_child_selector = Select(items=tag_no_child_items)
 tag_no_child_input = OneOf(tag_no_child_selector)
 tag_no_child_field = Field(
     content=Container(widgets=[tag_no_child_selector, tag_no_child_input]),
-    title="Add tag if parent object has no childs",
+    title="Add tag if parent object has no children",
 )
 
 configuration = Container(
@@ -119,28 +119,28 @@ def _get_parents():
     return parents
 
 
-def _get_childs():
-    childs = []
+def _get_children():
+    children = []
     for i, obj_class in enumerate(g.obj_classes):
         val = action_inputs[i].get_value()
         if val == "child":
-            childs.append(obj_class.name)
-    return childs
+            children.append(obj_class.name)
+    return children
 
 
 @start_button.click
 def start():
     success_message.hide()
     parents = _get_parents()
-    childs = _get_childs()
-    if len(childs) == 0:
+    children = _get_children()
+    if len(children) == 0:
         return
     if len(parents) == 0:
         return
     tag_no_child = _get_tag_no_child()
     g.threshold = threshold_input.get_value() / 100
     g.parents_names = parents
-    g.childs_names = childs
+    g.children_names = children
     with progress_bar(message="Processing items...", total=len(g.images)) as pbar:
         for image in g.images:
             services.bind_nested_objects_on_image(image.id, tag_no_child=tag_no_child)

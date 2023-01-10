@@ -36,5 +36,5 @@ else:
     images = api.image.get_list(dataset_id)
 
 parents_names = []
-childs_names = []
+children_names = []
 threshold = 0

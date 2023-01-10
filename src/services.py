@@ -4,10 +4,10 @@ import src.utils as utils
 import src.globals as g
 
 
-def _get_relations(parents, childs, threshold):
+def _get_relations(parents, children, threshold):
     relations = {}
     is_child = set()
-    for ch_idx, ch_el in enumerate(childs):
+    for ch_idx, ch_el in enumerate(children):
         for par_idx, par_el in enumerate(parents):
             if ch_idx in is_child:
                 break
@@ -43,13 +43,13 @@ def _get_parents_idxs(labels: List[sly.Label]):
     return parents_idxs
 
 
-def _get_childs_idxs(labels: List[sly.Label]):
-    childs_idxs = []
+def _get_children_idxs(labels: List[sly.Label]):
+    children_idxs = []
     for i, label in enumerate(labels):
         obj_name = label.obj_class.name
-        if label.binding_key is None and obj_name in g.childs_names:
-            childs_idxs.append(i)
-    return childs_idxs
+        if label.binding_key is None and obj_name in g.children_names:
+            children_idxs.append(i)
+    return children_idxs
 
 
 def _get_updated_labels(
@@ -72,19 +72,19 @@ def bind_nested_objects_on_image(image_id: int, tag_no_child: sly.Tag = None):
     ann = sly.Annotation.from_json(ann_json, g.project_meta)
 
     parents_idxs = _get_parents_idxs(ann.labels)
-    childs_idxs = _get_childs_idxs(ann.labels)
+    chldren_idxs = _get_children_idxs(ann.labels)
 
     relations = _get_relations(
         [ann.labels[i] for i in parents_idxs],
-        [ann.labels[i] for i in childs_idxs],
+        [ann.labels[i] for i in chldren_idxs],
         g.threshold,
     )
 
-    for parent_idx, childs_idxs in relations.items():
+    for parent_idx, child_idxs in relations.items():
         key = str(ann.labels[parents_idxs[parent_idx]].to_json()["id"])
         ann.labels[parents_idxs[parent_idx]].binding_key = key
-        for idx in childs_idxs:
-            ann.labels[childs_idxs[idx]].binding_key = key
+        for idx in child_idxs:
+            ann.labels[chldren_idxs[idx]].binding_key = key
 
     updated_labels = _get_updated_labels(ann.labels, parents_idxs, tag_no_child)
     for label in ann.labels:
