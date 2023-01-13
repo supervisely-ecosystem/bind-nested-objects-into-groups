@@ -8,6 +8,8 @@ if sly.is_development():
     load_dotenv(os.path.expanduser("~/supervisely.env"))
 
 api = sly.Api()
+team_id = sly.env.team_id()
+workspace_id = sly.env.workspace_id()
 project_id = sly.env.project_id()
 project_meta_json = api.project.get_meta(project_id)
 project_meta = sly.ProjectMeta.from_json(project_meta_json)
@@ -34,7 +36,3 @@ if dataset_id is None:
 else:
     dataset_info = api.dataset.get_info_by_id(dataset_id)
     images = api.image.get_list(dataset_id)
-
-parents_names = []
-children_names = []
-threshold = 0
