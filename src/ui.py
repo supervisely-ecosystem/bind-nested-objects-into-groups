@@ -14,6 +14,7 @@ from supervisely.app.widgets import (
     Empty,
     InputTag,
     OneOf,
+    Table,
 )
 from supervisely import TagApplicableTo
 import src.globals as g
@@ -52,7 +53,7 @@ for input_tag in tag_meta_name_to_input.values():
 tag_no_child_items = [
     Select.Item(None, "Do not add", Empty()),
     *[
-        Select.Item(name, name, tag_input._component._content)
+        Select.Item(name, name, tag_input._input_widget)
         for name, tag_input in tag_meta_name_to_input.items()
     ],
 ]
@@ -78,7 +79,11 @@ configuration = Container(
     ]
 )
 
-configuration_card = Card(title="Configuration", content=configuration)
+configuration_card = Card(
+    title="Configuration",
+    content=configuration,
+    description="Select which classes to be parents and which classes to be children",
+)
 
 progress_bar = Progress()
 
@@ -99,6 +104,16 @@ start_button_cont = Container(
     ]
 )
 start_button_card = Card(content=start_button_cont)
+
+results_table = Table(
+    columns=["image", "parents with children", "parents w/o children"]
+)
+results_table_card = Card(
+    title="Images with issues",
+    content=results_table,
+    description="List of images with parent objects that have 0 child objects",
+)
+results_table_card.hide()
 
 
 def _get_tag_no_child():
@@ -130,6 +145,9 @@ def _get_children():
 
 @start_button.click
 def start():
+    results_table_card.hide()
+    for _ in range(len(g.images)):
+        results_table.pop_row()
     success_message.hide()
     parents = _get_parents()
     children = _get_children()
@@ -137,12 +155,34 @@ def start():
         return
     if len(parents) == 0:
         return
+    threshold = threshold_input.get_value() / 100
     tag_no_child = _get_tag_no_child()
-    g.threshold = threshold_input.get_value() / 100
-    g.parents_names = parents
-    g.children_names = children
+    show_table_flag = False
     with progress_bar(message="Processing items...", total=len(g.images)) as pbar:
         for image in g.images:
-            services.bind_nested_objects_on_image(image.id, tag_no_child=tag_no_child)
+            (
+                parents_with_children,
+                parents_without_children,
+            ) = services.bind_nested_objects_on_image(
+                image_id=image.id,
+                parents=parents,
+                children=children,
+                threshold=threshold,
+                tag_no_child=tag_no_child,
+            )
+            image_labeling_url = f"{g.api.server_address}/app/images/{g.team_id}/{g.workspace_id}/{g.project_id}/{image.dataset_id}#image-{image.id}"
+            html_url = f'<a href="{image_labeling_url}">{image.name} <i class="zmdi zmdi-open-in-new"></i></a>'
+            if parents_without_children > 0:
+                show_table_flag = True
+                results_table.insert_row(
+                    data=[
+                        html_url,
+                        parents_with_children,
+                        parents_without_children,
+                    ]
+                )
             pbar.update(1)
+
+    if show_table_flag:
+        results_table_card.show()
     success_message.show()
