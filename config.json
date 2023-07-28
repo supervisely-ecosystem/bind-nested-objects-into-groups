@@ -1,24 +1,24 @@
 {
-  "type": "app",
-  "version": "2.0.0",
-  "entrypoint": "python -m uvicorn src.main:app --host 0.0.0.0 --port 8000",
-  "headless": false,
-  "name": "Group nested objects",
-  "description": "Binds nested objects into groups",
-  "docker_image": "supervisely/base-py-sdk:6.72.70",
-  "icon": "https://user-images.githubusercontent.com/115161827/211062544-2fc9edf7-9258-43be-a362-3cb293a92fd2.jpg",
-  "icon_cover": true,
-  "poster": "https://user-images.githubusercontent.com/115161827/211063080-95d8fc82-7549-4859-97fd-361bcb5e0b20.png",
-  "categories": [ 
-    "images",
-    "annotation transformation",
-    "data operations"
-  ],
-  "context_menu": {
-    "context_category": "Transform",
-    "target": [
-      "images_project",
-      "images_dataset"
-    ]
-  }
+    "type": "app",
+    "version": "2.0.0",
+    "entrypoint": "python -m uvicorn src.main:app --host 0.0.0.0 --port 8000",
+    "headless": false,
+    "name": "Group nested objects",
+    "description": "Binds nested objects into groups",
+    "docker_image": "supervisely/data-operations:0.0.1",
+    "icon": "https://user-images.githubusercontent.com/115161827/211062544-2fc9edf7-9258-43be-a362-3cb293a92fd2.jpg",
+    "icon_cover": true,
+    "poster": "https://user-images.githubusercontent.com/115161827/211063080-95d8fc82-7549-4859-97fd-361bcb5e0b20.png",
+    "categories": [
+        "images",
+        "annotation transformation",
+        "data operations"
+    ],
+    "context_menu": {
+        "context_category": "Transform",
+        "target": [
+            "images_project",
+            "images_dataset"
+        ]
+    }
 }
