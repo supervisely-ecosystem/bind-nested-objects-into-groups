@@ -1,5 +1,6 @@
 venv
 .venv
 *.pyc
-local.env
 supervisely
+.DS_Store
+pycache/
