@@ -18,7 +18,9 @@ dataset_id = sly.env.dataset_id(raise_not_found=False)
 dataset_info = None
 images = []
 
-obj_classes = project_meta.obj_classes
+obj_classes = []
+for obj_class in project_meta.obj_classes:
+    obj_classes.append(obj_class)
 
 if dataset_id is None:
     datasets = api.dataset.get_list(project_id=project_id)
