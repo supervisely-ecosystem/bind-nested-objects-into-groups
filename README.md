@@ -35,13 +35,13 @@ This application binds nested objects together if their intersection exceeds giv
 
 3. Choose threshold and add tag if parent object has no children. Click `START` button.
 
-<img src="https://github.com/supervisely-ecosystem/bind-nested-objects-into-groups/assets/119248312/87467a59-227f-4456-b975-ba8165548e78.png">
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/119248312/296609047-87467a59-227f-4456-b975-ba8165548e78.png">
 
 5. Stop the application.
 
-<img src="https://github.com/supervisely-ecosystem/bind-nested-objects-into-groups/assets/119248312/1df85dbc-2f88-4115-96de-8805cf323f0e.png" width = 800px>
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/119248312/296609491-1df85dbc-2f88-4115-96de-8805cf323f0e.png" width = 800px>
 
 ## Screenshot
 
-<img src="https://github.com/supervisely-ecosystem/bind-nested-objects-into-groups/assets/119248312/09357f0a-a588-4bc1-960a-d81bfb466359.png">
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/119248312/296609615-09357f0a-a588-4bc1-960a-d81bfb466359.png">
 
