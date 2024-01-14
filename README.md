@@ -25,17 +25,23 @@ This application binds nested objects together if their intersection exceeds giv
 
 # How to Run
 
-0. Go to the list of projects in your Workspace
+0. Go to the list of projects in your Workspace.
 
-1. Open the context menu of a project and run the app
+1. Open the context menu of a project and run the app.
 
 <img src="https://user-images.githubusercontent.com/115161827/211084224-31319a20-8d20-4e47-9777-1dc793ab397d.gif">
 
-2. Configure the classes settings, choose threshold and click `Start`
+2. Configure the every class settings, by classifying as `parent`, `child` or `do nothing`.
 
-3. Stop the application in the workspace tasks
+3. Choose threshold and add tag if parent object has no children. Click `START` button.
+
+<img src="https://github.com/supervisely-ecosystem/bind-nested-objects-into-groups/assets/119248312/87467a59-227f-4456-b975-ba8165548e78.png">
+
+5. Stop the application.
+
+<img src="https://github.com/supervisely-ecosystem/bind-nested-objects-into-groups/assets/119248312/1df85dbc-2f88-4115-96de-8805cf323f0e.png" width = 800px>
 
 ## Screenshot
 
-<img src="https://user-images.githubusercontent.com/115161827/211086283-a18585ab-260f-45eb-ba05-ead1794f4fce.png">
+<img src="https://github.com/supervisely-ecosystem/bind-nested-objects-into-groups/assets/119248312/09357f0a-a588-4bc1-960a-d81bfb466359.png">
 
