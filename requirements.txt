@@ -1,1 +1,1 @@
-git+https://github.com/supervisely/supervisely.git@test-fastapi-incompability
+git+https://github.com/supervisely/supervisely.git@fix-starlette-template-response
